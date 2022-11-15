@@ -37,6 +37,10 @@ jobs:
     needs: setup
     runs-on: ubuntu-20.04
     steps:
+      - name: Where am I?
+        run: |
+          pwd
+          ls -l
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.0.1
         with:
