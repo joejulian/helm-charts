@@ -42,7 +42,7 @@ jobs:
           version: v3.7.0
 
       - name: Run chart-testing (lint)
-        run: ct lint --config redpanda/ci/ct.yaml
+        run: ct lint --config .github/ct.yaml
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.3.0
@@ -53,4 +53,4 @@ jobs:
         run: kubectl get nodes
 
       - name: Run chart-testing (install)
-        run: ct install --config redpanda/ci/ct.yaml
+        run: ct install --config .github/ct.yaml
