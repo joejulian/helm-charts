@@ -23,6 +23,7 @@ on:
   push:
     branches:
       - main
+      - operator_kustomize_base
 jobs:
   release:
     runs-on: ubuntu-latest
