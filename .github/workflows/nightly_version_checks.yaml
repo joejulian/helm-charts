@@ -37,15 +37,23 @@ jobs:
           git checkout -
       - uses: actions/setup-go@v4
         with:
-          go-version: '>=1.20.4'
+          go-version: '>=1.21.3'
+      - uses: dcarbone/install-yq-action@64b1b9eb28920bb1a4c13c05321df284f9a8f940  # v1.1.1
       - run: go install github.com/joejulian/docker-tag-list@latest
       - name: Check chart version for ${{ matrix.chart }}
         id: chartversion
-        run: >-
-          echo "MESSAGE=$(
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo 'MESSAGE<<EOF'
             .github/bump_chart_versions.sh ${{ matrix.chart }}
-          )" >> $GITHUB_OUTPUT
-      - uses: peter-evans/create-pull-request@v5
+            echo -e '\nEOF'
+          } >> "$GITHUB_OUTPUT"
+      - name: debug -- delete me
+        run: echo ${{ steps.chartversion.output.MESSAGE }}
+      - name: create PR
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38  # v5.0.2
         with:
           commit-message: ${{ steps.chartversion.outputs.MESSAGE }}
           title: ${{ steps.chartversion.outputs.MESSAGE }}
