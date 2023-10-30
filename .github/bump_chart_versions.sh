@@ -37,7 +37,14 @@ if [[ "${APPVERSION}" == "${LATEST}" ]]; then
     exit 0
 fi
 
+# build the commit text
 echo "update ${CHART} appVersion from ${APPVERSION} to ${LATEST}"
+echo
+if [[ "$CHART" == "redpanda" ]]; then
+    gh --repo redpanda-data/redpanda release view "${LATEST}" --json body -t '{{ .body }}'
+fi
+
 bump_patch_version
 sed -i "s/^version: .*$/version: ${NEW_VERSION}/" "${CHARTFILE}"
 sed -i "s/^appVersion: .*$/appVersion: ${LATEST}/" "${CHARTFILE}"
+sed -i "s/${REPO}:${APPVERSION}/${REPO}:${LATEST}/" "${CHARTFILE}"
