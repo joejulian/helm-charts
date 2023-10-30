@@ -45,7 +45,8 @@ jobs:
           echo "MESSAGE=$(
             .github/bump_chart_versions.sh ${{ matrix.chart }}
           )" >> $GITHUB_OUTPUT
-      - uses: peter-evans/create-pull-request@v5
+      - name: create PR
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38  # v5.0.2
         with:
           commit-message: ${{ steps.chartversion.outputs.MESSAGE }}
           title: ${{ steps.chartversion.outputs.MESSAGE }}
